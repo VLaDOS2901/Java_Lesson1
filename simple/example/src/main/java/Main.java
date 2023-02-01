@@ -15,22 +15,54 @@ public class Main {
         //перевіряє чи підключення є успішним
         try(Connection con = DriverManager.getConnection(strCon, "root", "")){
             System.out.println("Connection is good");
-            //текст запиту на базу данних
-            String query="SELECT * FROM categories";
-            //готує запит до виконання
-            PreparedStatement command = con.prepareStatement(query);
-            //виконує запит
-            ResultSet resultSet = command.executeQuery();
-            //next - читає кожен рядок окремо
-            while(resultSet.next())
-            {
-                System.out.println("Id: "+ resultSet.getString("id"));
-                System.out.println("Name: "+ resultSet.getString("name"));
+            Boolean continueExe = true;
+            System.out.println("1. Вивести список категорі\n" +
+                    "2. Додати категорію\n" +
+                    "3. Вихід");
+            while (continueExe){
+                System.out.println("Виберіть дію");
+                Scanner input = new Scanner(System.in);
+                String str = input.nextLine();
+                switch (str){
+                    case "1":
+                        //текст запиту на базу данних
+                        String query="SELECT * FROM categories";
+                        //готує запит до виконання
+                        PreparedStatement command = con.prepareStatement(query);
+                        //виконує запит
+                        ResultSet resultSet = command.executeQuery();
+                        //next - читає кожен рядок окремо
+                        while(resultSet.next())
+                        {
+                            System.out.println("Id: "+ resultSet.getString("id"));
+                            System.out.println("Name: "+ resultSet.getString("name"));
+                        }
+                        break;
+                    case "2":
+                        System.out.println("Введіть назву категорії");
+                        String name = input.nextLine();
+                        String insertQuery="INSERT INTO categories (name, datecreate) VALUES ('"+ name +"' , NOW());";
+                        PreparedStatement command2 = con.prepareStatement(insertQuery);
+                        command2.executeQuery();
+                        System.out.println("Додано нову категорію - " + name);
+                        break;
+                    case "3":
+                        System.out.println("Вихід");
+                        continueExe = false;
+                        break;
+                    default:
+                        break;
+
+                }
             }
+
+
         }
         catch (Exception ex){
             System.out.println("Error connection " + ex.getMessage());
         }
+
+
 //        Person p = new Person("Іван", "Музичко"); // створення нового об'єкту типу Person
 //        System.out.println(p);
 //        p.setFirstName("Василь"); // Виклик сетера
