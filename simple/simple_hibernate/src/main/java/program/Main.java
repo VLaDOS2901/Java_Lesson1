@@ -17,7 +17,36 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         try{
-            //addQuestion("Коли вибухнув Чорнобиль?", QuestionType.RUDIO_BUTTON);
+            Scanner in = new Scanner(System.in);
+            System.out.println("Введіть запитання");
+            String que = in.nextLine();
+            addQuestion(que, QuestionType.RUDIO_BUTTON);
+
+            int id = 0;
+            Session context = HiberContext.getSessionFactory().openSession();
+            Query query = context.createQuery("FROM Question");
+            List<Question> questions = query.list();
+            for (Question question:questions)
+                id=question.getId();
+
+            String answText = "";
+            boolean isCorrect = false;
+            for (int i = 0; i<3; i++)
+            {
+                System.out.println("Введіть відповідь");
+                answText = in.nextLine();
+                System.out.println("Ця відповідь правильна? y/n");
+                String isCorrectStr = in.nextLine();
+                if(isCorrectStr == "y")
+                    isCorrect = true;
+                else
+                    isCorrect = false;
+                AddQuestionItem(id,answText,isCorrect);
+            }
+
+
+
+            context.close(); // закриває підключення
 //            AddQuestionItem(1,"1945",false);
 //            AddQuestionItem(1,"1986",true);
 //            AddQuestionItem(1,"1991",false);
