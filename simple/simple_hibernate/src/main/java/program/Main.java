@@ -18,38 +18,81 @@ public class Main {
     public static void main(String[] args) {
         try{
             Scanner in = new Scanner(System.in);
-            System.out.println("Введіть запитання");
-            String que = in.nextLine();
-            addQuestion(que, QuestionType.RUDIO_BUTTON);
 
-            int id = 0;
-            Session context = HiberContext.getSessionFactory().openSession();
-            Query query = context.createQuery("FROM Question");
-            List<Question> questions = query.list();
-            for (Question question:questions)
-                id=question.getId();
 
-            String answText = "";
-            boolean isCorrect = false;
-            for (int i = 0; i<3; i++)
+            boolean cycle = true;
+            while (cycle)
             {
-                System.out.println("Введіть відповідь");
-                answText = in.nextLine();
-                System.out.println("Ця відповідь правильна? y/n");
-                String isCorrectStr = in.nextLine();
-                if(isCorrectStr == "y")
-                    isCorrect = true;
-                else
-                    isCorrect = false;
-                AddQuestionItem(id,answText,isCorrect);
+                System.out.println("Виберіть дію \n 1)Пройти тест \n 2)Додати нове запитання \n 3)Вийти");
+                int action = Integer.parseInt(in.nextLine());
+                switch (action)
+                {
+                    case 1:
+                        Session context = HiberContext.getSessionFactory().openSession();
+                        Query query = context.createQuery("FROM Question");
+                        List<Question> questions = query.list();
+                        int questionCount = 0;
+                        int counter = 0;
+                        for (Question question:questions)
+                        {
+                            System.out.println(question.getText());
+
+                            Query query2 = context.createQuery("FROM QuestionItem where question.id = " + question.getId());
+                            List<QuestionItem> answers = query2.list();
+                            int i = 1;
+                            int correctAnsw = 0;
+                            for(QuestionItem answer:answers) {
+                                System.out.println(i + ")"+answer.getText());
+                                if(answer.isTrue() == true)
+                                    correctAnsw= i;
+                                i++;
+                            }
+                            System.out.println("Введіть відповідь");
+                            int answ = Integer.parseInt(in.nextLine());
+                            if (answ == correctAnsw) {
+                                counter++;
+                            }
+                            questionCount++;
+                        }
+                        System.out.println("Your result is " + counter + "/" + questionCount);
+                        break;
+                    case 2:
+                        // Додати нове запитання
+                        System.out.println("Введіть запитання");
+                        String que = in.nextLine();
+                        addQuestion(que, QuestionType.RUDIO_BUTTON);
+
+                        int id = 0;
+                        Session context2 = HiberContext.getSessionFactory().openSession();
+                        Query query2 = context2.createQuery("FROM Question");
+                        List<Question> questions2 = query2.list();
+                        for (Question question:questions2)
+                            id=question.getId();
+
+                        String answText = "";
+                        boolean isCorrect = false;
+                        for (int i = 0; i<3; i++)
+                        {
+                            System.out.println("Введіть відповідь");
+                            answText = in.nextLine();
+                            System.out.println("Ця відповідь правильна? y/n");
+                            String isCorrectStr = in.nextLine();
+                            isCorrectStr = isCorrectStr.toLowerCase();
+                            if(isCorrectStr.contains("y"))
+                                isCorrect = true;
+                            else if(isCorrectStr.contains("n"))
+                                isCorrect = false;
+                            AddQuestionItem(id,answText,isCorrect);
+                        }
+                        context2.close(); // закриває підключення
+                        break;
+                    case 3:
+                        cycle = false;
+                        break;
+                    default:
+                        break;
+                }
             }
-
-
-
-            context.close(); // закриває підключення
-//            AddQuestionItem(1,"1945",false);
-//            AddQuestionItem(1,"1986",true);
-//            AddQuestionItem(1,"1991",false);
         }catch (Exception ex)
         {
             System.out.println("Виникла помилка " + ex.getMessage());
