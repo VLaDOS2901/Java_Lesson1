@@ -106,7 +106,7 @@ public class Main {
             System.out.println("Виникла помилка " + ex.getMessage());
         }*/
     }
-    private static void addProduct(){
+    private static void addProduct(){ //метод, який додає новий продукт
         try (Session context = HiberContext.getSessionFactory().openSession()) {
             Transaction tx = context.beginTransaction();
             var cat = context.get(Category.class, 1);
@@ -127,7 +127,7 @@ public class Main {
             context.save(c);
         }
     }
-    private static void AddUserAndRoles() {
+    private static void AddUserAndRoles() { //метод, який додає нову роль і користувача
         try (Session context = HiberContext.getSessionFactory().openSession()) {
             Transaction tx = context.beginTransaction();
             Role role = new Role();

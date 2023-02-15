@@ -23,14 +23,14 @@ public class Category /*extends BaseModel*/{
     private String name;
     @Column(length = 200)
     private String image;
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category")// створює зв'зок один до багатьох з таблицею tbl_products
     private List<Product> products;
     public Category(){
         products = new ArrayList<>();
     }
 
     public Category(String name, String image, Date dateCreate, boolean isDelete) {
-        super();
+        super(); //виклик конструктора по замовчуванню
         this.name = name;
         this.image = image;
         this.dateCreate = dateCreate;

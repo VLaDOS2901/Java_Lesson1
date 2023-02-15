@@ -23,10 +23,10 @@ public class Product {
     @Column(length = 4000)
     private String description;
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false) //Зв'язок між таблицями tbl_products і tbl_categories
     private Category category;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product") // об'днує колонки двох різних таблиць. Зв'язок між таблицями tbl_products і tbl_product_images
     private List<ProductImage> productImages;
     public Product(){
         productImages = new ArrayList<>();

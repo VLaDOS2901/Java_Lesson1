@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "tbl_user_roles")
-@IdClass(UserRolePK.class)
-public class UserRole {
+@IdClass(UserRolePK.class)// звязує ключі з класом
+public class UserRole { //таблиця, яка об'єднує користувачів і ролі
     @Id
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

@@ -20,7 +20,7 @@ public class ProductImage {
     private String name;
     private int priority;
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id", nullable = false) // об'днує колонки двох різних таблиць. Зв'язок між таблицями tbl_products і tbl_product_images
     private Product product;
 
     public ProductImage(Date dateCreated, boolean isDelete, String name, int priority, Product product) {

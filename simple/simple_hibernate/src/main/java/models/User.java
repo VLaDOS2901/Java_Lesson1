@@ -33,7 +33,7 @@ public class User {
     }
 
     public User(String firstName, String lastName, String email, String phone, String password){
-            super();
+            super(); //виклик конструктора по замовчуванню
             this.firstName = firstName;
             this.lastName = lastName;
             this.email = email;
