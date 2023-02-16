@@ -18,6 +18,11 @@ public class Main {
         //AddUserAndRoles();
         //addCategory("Ноутбуки","1.jpg");
 //        addProduct();
+        //addOrderStatus();
+        //addOrder();
+        //addOrderItem();
+        //addBasket();
+//        addFilters();
         try (Session context = HiberContext.getSessionFactory().openSession()) {
 
 
@@ -106,7 +111,73 @@ public class Main {
             System.out.println("Виникла помилка " + ex.getMessage());
         }*/
     }
-    private static void addProduct(){ //метод, який додає новий продукт
+    private  static void addFilters(){
+        try (Session context = HiberContext.getSessionFactory().openSession()) {
+            Transaction tx = context.beginTransaction();
+            FilterValue filterValue = new FilterValue();
+            filterValue.setName("Value1");
+            context.save(filterValue);
+            FilterName filterName = new FilterName();
+            filterName.setName("Name1");
+            context.save(filterName);
+            FilterNameGroup filterNameGroup = new FilterNameGroup();
+            filterNameGroup.setFilterValue(filterValue);
+            filterNameGroup.setFilterName(filterName);
+            context.save(filterNameGroup);
+            Filter filter = new Filter();
+            filter.setFilterName(filterName);
+            filter.setFilterValue(filterValue);
+            Product pr = context.get(Product.class, 1);
+            filter.setProduct(pr);
+            context.save(filter);
+            tx.commit();
+        }
+    }
+    private static void addBasket(){
+        try (Session context = HiberContext.getSessionFactory().openSession()) {
+            Transaction tx = context.beginTransaction();
+            Baskets baskets = new Baskets();
+            User us = context.get(User.class, 1);
+            Product pr = context.get(Product.class, 1);
+            baskets.setUser(us);
+            baskets.setProduct(pr);
+            context.save(baskets);
+            tx.commit();
+            //baskets.setCount();
+        }
+    }
+    private static void addOrderItem(){
+        try (Session context = HiberContext.getSessionFactory().openSession()) {
+            Transaction tx = context.beginTransaction();
+            var or = context.get(Order.class, 1);
+            var pr = context.get(Product.class, 1);
+            OrderItem orderItem = new OrderItem(false, new Date(), 200, 1, or, pr);
+            context.save(orderItem);
+            tx.commit();
+        }
+    }
+    private static void addOrder() {
+        try (Session context = HiberContext.getSessionFactory().openSession()) {
+            Transaction tx = context.beginTransaction();
+            var stat = context.get(OrderStatus.class, 1);
+            var us = context.get(User.class, 1);
+            Order order = new Order(false, new Date(), stat, us);
+            context.save(order);
+            tx.commit();
+        }
+    }
+    private static void addOrderStatus() {
+        try (Session context = HiberContext.getSessionFactory().openSession()) {
+            Transaction tx = context.beginTransaction();
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setName("Delivered");
+            orderStatus.setDateCreated(new Date());
+            context.save(orderStatus);
+            tx.commit();
+        }
+    }
+
+    private static void addProduct() { //метод, який додає новий продукт
         try (Session context = HiberContext.getSessionFactory().openSession()) {
             Transaction tx = context.beginTransaction();
             var cat = context.get(Category.class, 1);
@@ -121,12 +192,14 @@ public class Main {
         }
 
     }
-    private static void addCategory(String name, String image){
+
+    private static void addCategory(String name, String image) {
         try (Session context = HiberContext.getSessionFactory().openSession()) {
-            Category c =  new Category(name, image, new Date(), false);
+            Category c = new Category(name, image, new Date(), false);
             context.save(c);
         }
     }
+
     private static void AddUserAndRoles() { //метод, який додає нову роль і користувача
         try (Session context = HiberContext.getSessionFactory().openSession()) {
             Transaction tx = context.beginTransaction();

@@ -27,9 +27,12 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<UserRole> userRoles;
+    @OneToMany(mappedBy = "user")
+    private List<Baskets> baskets;
 
     public User(){
         userRoles = new ArrayList<>();
+        baskets = new ArrayList<>();
     }
 
     public User(String firstName, String lastName, String email, String phone, String password){

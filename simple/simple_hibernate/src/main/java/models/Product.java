@@ -26,11 +26,22 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false) //Зв'язок між таблицями tbl_products і tbl_categories
     private Category category;
 
-    @OneToMany(mappedBy = "product") // об'днує колонки двох різних таблиць. Зв'язок між таблицями tbl_products і tbl_product_images
+    @OneToMany(mappedBy = "product")
+    // об'днує колонки двох різних таблиць. Зв'язок між таблицями tbl_products і tbl_product_images
     private List<ProductImage> productImages;
-    public Product(){
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "product")
+    private List<Filter> filters;
+    @OneToMany(mappedBy = "product")
+    private List<Baskets> baskets;
+    public Product() {
         productImages = new ArrayList<>();
+        orderItems = new ArrayList<>();
+        filters = new ArrayList<>();
+        baskets = new ArrayList<>();
     }
+
     public Product(Date dateCreate, boolean isDelete, String name, String description, Category category) {
         this.dateCreate = dateCreate;
         this.isDelete = isDelete;
