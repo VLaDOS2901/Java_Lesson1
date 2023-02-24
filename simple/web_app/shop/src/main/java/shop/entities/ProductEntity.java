@@ -4,21 +4,25 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tbl_categories")
-public class CategoryEntity {
+@Table(name = "tbl_products")
+public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false)
     private String name;
-//    @OneToMany(mappedBy = "category")// створює зв'зок один до багатьох з таблицею tbl_products
-//    private List<ProductEntity> products;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private CategoryEntity category;
+
+//    @OneToMany(mappedBy = "product")
+//    private List<ProductImageEntity> productImages;
 }
