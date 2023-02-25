@@ -39,8 +39,6 @@ public class ProductImagesController {
             if (pe.getId() == model.getProductId())
                 productImage.setProduct(pe);
         }
-//        ProductEntity p = products[model.getProductId()-1];
-//        productImage.setProduct(p);
         productImage.setPriority(model.getPriority());
         productImageRepository.save(productImage);
         return new ResponseEntity<>(productImage, HttpStatus.CREATED);

@@ -38,8 +38,6 @@ public class ProductController {
             if(ca.getId() == model.getCategoryId())
                 product.setCategory(ca);
         }
-        //CategoryEntity c = categories[model.getCategoryId()-1];
-        //product.setCategory(c);
         productRepository.save(product);
         return new ResponseEntity<>(product, HttpStatus.CREATED);
     }
