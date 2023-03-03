@@ -12,6 +12,7 @@ import shop.repositories.CategoryRepository;
 import shop.storage.StorageService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -37,4 +38,25 @@ public class CategoryController {
         var result = categoryMapper.CategoryItemByCategory(category);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
+    @PutMapping("put/{id}")
+    public ResponseEntity<CategoryItemDTO> put(@RequestBody CategoryCreateDTO model, int id) {
+        Optional<CategoryEntity> optionalCategory = categoryRepository.findById(id);
+        if (!optionalCategory.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        CategoryEntity category = optionalCategory.get();
+        category.setName(model.getName());
+        category.setDescription(model.getDescription());
+        category.setImage(storageService.save(model.getBase64()));
+        categoryRepository.save(category);
+        CategoryItemDTO result = categoryMapper.CategoryItemByCategory(category);
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+    @DeleteMapping("delete_category/{id}")
+    public String delete(@PathVariable int id){
+        categoryRepository.deleteById((id));
+        return "Category was deleted";
+    }
+
+
 }
