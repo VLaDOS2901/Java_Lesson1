@@ -9,6 +9,7 @@ import Calendar from './components/pages/calendar';
 import Projects from './components/pages/projects';
 import Team from './components/pages/team';
 import Notifications from './components/pages/notifications';
+import Create from './components/pages/create';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="projects" element={<Projects />} />
         <Route path="team" element={<Team />} />
         <Route path="notifications" element={<Notifications />} />
+        <Route path="create" element={<Create />} />
       </Routes>
       {/* <Pagination/> */}
       {/* <Home/> */}
