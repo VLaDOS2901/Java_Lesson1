@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import {ICategory} from "./types";
+import { Buffer } from 'buffer';
+import { ICategory } from "./types";
 /*
   This example requires some changes to your config:
   
@@ -44,15 +45,17 @@ const Home = () => {
   useEffect(() => {
     axios.get("http://localhost:8084/api/categories").then((res) => {
       setCategories(res.data);
+      console.log(res.data);
     });
   }, []);
-  
+
   return (
     <>
-    <h2 className="text-2xl font-bold text-gray-900 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">Категорії</h2>
-    <ul className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-2xl">
-    {categories.map((c:any)=>
-      <li key={c.id}>#{c.id}  {c.name}</li>)}
+      <h2 className="text-2xl font-bold text-gray-900 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">Категорії</h2>
+      <ul className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-2xl">
+        {categories.map((c: any) =>
+          <li key={c.id}>#{c.id}  {c.name}<img src={"http://localhost:8084/files/"+c.image} className="w-40 object-center" /></li>)
+        }
       </ul>
       <div className="bg-gray-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
