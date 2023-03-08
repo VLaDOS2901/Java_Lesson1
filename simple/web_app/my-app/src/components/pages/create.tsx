@@ -20,7 +20,6 @@ const Create = () => {
             const reader = new FileReader();
             reader.onload = () => {
                 setPreviewUrl(reader.result as string);
-                //console.log(reader.result);
             };
             reader.readAsDataURL(selectedFile);
         } else {
@@ -47,18 +46,16 @@ const Create = () => {
         axios.post('http://localhost:8084/api/categories', category)
         .then(response => {
           console.log('Form data submitted successfully:', response.data);
-          // handle success response
         })
         .catch(error => {
           console.error('Error submitting form data:', error);
-          // handle error response
         });
         window.location.replace("/");
     }
     return (
         <>
             <div className="isolate bg-white py-24 px-6 sm:py-32 lg:px-8">
-                <div /*action="#" method="POST"*/ className="mx-auto mt-16 max-w-xl sm:mt-20">
+                <div className="mx-auto mt-16 max-w-xl sm:mt-20">
                     <div className="grid grid-cols-1 gap-y-6 gap-x-8 sm:grid-cols-2">
 
                         <div className="sm:col-span-2">

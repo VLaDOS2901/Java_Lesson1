@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import shop.dto.UploadImageDto;
 import shop.storage.StorageService;
 
@@ -29,9 +30,16 @@ public class HomeController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "filename=\""+urlFileName+"\"")
                 .body(file);
     }
+    //Завантажити зображення через base64
     @PostMapping("/upload")
     public String upload(@RequestBody UploadImageDto dto){
         String fileName = storageService.save(dto.getBase64());
+        return fileName;
+    }
+    //Вибрати та завантажити існуюче зображення з комп'ютера
+    @PostMapping(value = "/form/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String fromUpload(@RequestParam("file") MultipartFile file){
+        String fileName = storageService.saveMultipartFile(file);
         return fileName;
     }
 }
