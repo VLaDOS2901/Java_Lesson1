@@ -1,10 +1,57 @@
+import axios from "axios";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { APP_ENV } from "../../../env";
+import { CategoryActionType, ICategoryItem, ICategoryItemCreate } from "../../home/types";
 //Сторінка створення нової категорії
 const CategoryCratePage = () => {
+  // interface Category {
+  //   name: string;
+  //   description: string;
+  //   image: string;
+  // }
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setFile(null);
+      setPreviewUrl("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+    }
+    console.log(previewUrl);
+  }
+  function nameInputChange(event: ChangeEvent<HTMLInputElement>) {
+    setName(event.target.value);
+  }
+  function descriptionInputChange(event: ChangeEvent<HTMLInputElement>) {
+    setDescription(event.target.value);
+  }
+  const dispatch = useDispatch();
+  
+  const handleClick = () => {
+    const category: ICategoryItemCreate = {
+      name: name,
+      description: description,
+      image: previewUrl
+    };
+    dispatch(dispatch({type:CategoryActionType.POST_CATEGORY, payload: category}))
+  }
+
   return (
     <div className="p-8 rounded border border-gray-200">
       <h1 className="font-medium text-3xl">Додати категорію</h1>
-      <form>
+      <div>
         <div className="mt-8 grid lg:grid-cols-1 gap-4">
           <div>
             <label
@@ -17,6 +64,7 @@ const CategoryCratePage = () => {
               type="text"
               name="name"
               id="name"
+              onChange={nameInputChange}
               className="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-blue-500 focus:border-blue-500 text-gray-700 w-full"
               placeholder="Вкажіть назву категорії"
             />
@@ -25,17 +73,18 @@ const CategoryCratePage = () => {
           <div>
             <label
               htmlFor="description"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="text-sm text-gray-700 block mb-1 font-medium"
             >
               Опис
             </label>
-            <textarea
+            <input
               id="description"
               name="description"
-              rows={4}
+              onChange={descriptionInputChange}
+              // rows={4}
               className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Вкажіть опис..."
-            ></textarea>
+            />
           </div>
 
           <div>
@@ -49,14 +98,16 @@ const CategoryCratePage = () => {
                 className="inline-block w-20 overflow-hidden bg-gray-100"
               >
 
-                <svg
+                {/* <svg
                   className="h-full w-full text-gray-300"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-
+                </svg> */}
+                {previewUrl && (
+                  <img src={previewUrl} className="h-100 w-100" alt="Preview" />
+                )}
               </label>
               <label
                 htmlFor="selectImage"
@@ -73,6 +124,7 @@ const CategoryCratePage = () => {
               type="file"
               id="selectImage"
               className="hidden"
+              onChange={handleInputChange}
             />
           </div>
 
@@ -80,7 +132,7 @@ const CategoryCratePage = () => {
         </div>
         <div className="space-x-4 mt-8">
           <button
-            type="submit"
+            onClick={handleClick}
             className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 active:bg-blue-700 disabled:opacity-50"
           >
             Додати
@@ -89,7 +141,7 @@ const CategoryCratePage = () => {
             Скасувати
           </Link>
         </div>
-      </form>
+      </div>
     </div>
   )
 }
