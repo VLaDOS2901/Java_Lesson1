@@ -14,5 +14,6 @@ export interface ICategoryItemCreate  {
 //Визначаєио типи екшенів, які в нас будуть
 export enum CategoryActionType {
     GET_CATEGORIES = "GET_CATEGORIES_ACTION",
-    POST_CATEGORY = "POST_CATEGORY_ACTION"
+    POST_CATEGORY = "POST_CATEGORY_ACTION",
+    DELETE_CATEGORY = "DELETE_CATEGORY_ACTION"
 }

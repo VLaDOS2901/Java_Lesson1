@@ -18,13 +18,30 @@ export const CategoryReducer = (state = initState, action: any) => {
             return payload;
         }
         case CategoryActionType.POST_CATEGORY: {
+            var result = "";
             axios.post('http://localhost:8084/api/categories', action.payload)
                 .then(response => {                   
-                    console.log('Form data submitted successfully:', response.data);
+                    console.log('Category added successfully:', response.data);
+                    result = response.data;
                 })
                 .catch(error => {
-                    console.error('Error submitting form data:', error);
+                    console.error('Error adding category:', error);
+                    result = error;
                 });
+            return result;
+        }
+        case CategoryActionType.DELETE_CATEGORY:{
+            console.log(action.payload);
+            var result = "";
+            axios.delete('http://localhost:8084/api/categories/delete_category/'+action.payload).then(response => {                   
+                console.log('Category deleted successfully:', response.data);
+                result = response.data;
+            })
+            .catch(error => {
+                console.error('Error deleting category:', error);
+                result = error;
+            });
+            return result;
         }
     }
     return state;

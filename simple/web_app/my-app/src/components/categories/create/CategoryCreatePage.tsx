@@ -46,8 +46,8 @@ const CategoryCratePage = () => {
       image: previewUrl
     };
     dispatch(dispatch({type:CategoryActionType.POST_CATEGORY, payload: category}))
+    window.location.replace("/");
   }
-
   return (
     <div className="p-8 rounded border border-gray-200">
       <h1 className="font-medium text-3xl">Додати категорію</h1>
